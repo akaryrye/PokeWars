@@ -3,59 +3,65 @@ let character = {
     
     ash: {
         name: "Ash",
-        health: 100,
-        attack: 100,
-        counter: 100,
+        health: 150,
+        attack: 10,
+        counter: 15,
         icon: "ash_icon.png"
     },
     pikachu: {
         name: "Pikachu",
-        health: 100,
-        attack: 100,
-        counter: 100,
+        health: 120,
+        attack: 15,
+        counter: 20,
         icon: "pikachu_icon.jpg"
     },
     bulbasaur: {
         name: "Bulbasaur",
-        health: 100,
-        attack: 100,
-        counter: 100,
+        health: 110,
+        attack: 18,
+        counter: 22,
         icon: "bulbasaur_icon.jpg"
     },
     charizard: {
         name: "Charizard",
         health: 100,
-        attack: 100,
-        counter: 100,
+        attack: 20,
+        counter: 25,
         icon: "charizard_icon.jpg"
     }
-}
+};
 
 let player;
 let opponent;
 let gameOn = false;
+let turnCount = 0;
 
+// determines how much damage an attack yields
+function calcDamage(playerUp) {
+    let accuracy = Math.floor(Math.random() * Math.floor(100));
+    //let attackPower = character.playerUp.
+}
 
 // When you click on a character:
 $(".character_img").click(function() {
-// If player isnt selected, asign the id to "player", change image to color 
+// If player isnt selected, asign the id to "player", change image to color
     if (!player && gameOn === false) {
-        player = ($(this).attr("id"));
-        $("#" + player).css("filter", "grayscale(0%)");
+        player = character[$(this).attr("id")];
+        $(this).css("filter", "grayscale(0%)");
         // Insert current player info into div
-        $("#player_name").text(character[player].name);
-        $("#player_image").html("<img src='assets/media/" + character[player].icon + "'></img>");
-        $("#player_health").text(character[player].health);
+        $("#player_name").text(player.name);
+        $("#player_image").html("<img src='assets/media/" + player.icon + "'></img>");
+        $("#player_health").text(player.health);
 
 // if player is selected, but not opponent, assign id to "opponent", change image to color.
     } else if (player && !opponent && gameOn === false) {
         if ($(this).attr("id") !== player)
-            opponent = ($(this).attr("id"));
-        $("#" + opponent).css("filter", "grayscale(0%)");
+            opponent = character[$(this).attr("id")];
+        $(this).css("filter", "grayscale(0%)");
         // Insert current opponent info into div
-        $("#opponent_name").text(character[opponent].name);
-        $("#opponent_image").html("<img src='assets/media/" + character[opponent].icon + "'></img>");
-        $("#opponent_health").text(character[opponent].health);
+        $("#opponent_name").text(opponent.name);
+        $("#opponent_image").html("<img src='assets/media/" + opponent.icon + "'></img>");
+        $("#opponent_health").text(opponent.health);
     } 
 });
 
@@ -66,9 +72,12 @@ $("#start").click(function() {
 })
 
 $("#attack").click(function() {
-    
-    alert("begin")
+    if (gameOn === true) {
+        let winner = chooseWinner();
+        if (winner == 0) {
 
+        }
+    }
 })
 
 $("#reset").click(function() {
