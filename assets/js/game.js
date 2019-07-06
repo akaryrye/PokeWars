@@ -62,10 +62,7 @@ $(".character_img").click(function() {
 $("#start").click(function() {
     if (player && opponent) {
         gameOn = true;
-         
     }
-    
-
 })
 
 $("#attack").click(function() {
@@ -79,5 +76,6 @@ $("#reset").click(function() {
     $("#" + opponent).css("filter", "grayscale(100%)");
     player = undefined;
     opponent = undefined;
+    gameOn = false;
     $(".player_card").empty();
 })
