@@ -31,61 +31,96 @@ let character = {
     }
 };
 
-let player;
-let opponent;
+let player = {};
+let opponent = {};
 let gameOn = false;
 let turnCount = 1;
+let listOfDead = [];
 
 // determines how much damage an attack yields
-function calcDamage(playerUp) {
+function calcDamage(obj) {
     let accuracy = Math.floor(Math.random() * Math.floor(100));
-    let attackPower = character[playerUp].attack * accuracy;
+    let attackPower = Math.round((obj.attack * accuracy) / 100);
     return attackPower;
 }
 
 // When you click on a character:
 $(".character_img").click(function() {
-// If player isnt selected, populate "player" object, change image to color
-    if (!player && gameOn === false) {
-        player = character[$(this).attr("id")];
-        $(this).css("filter", "grayscale(0%)");
-        // Insert current player info into div
+
+    // If player and opponent are not yet selected:
+    if (!player.name && !opponent.name) {
+        
+        // populate the "player" object
+        player.name = character[$(this).attr("id")].name;
+        player.attack = character[$(this).attr("id")].attack;
+        player.health = character[$(this).attr("id")].health;
+        
+        // insert current player info into div
         $("#player_name").text(player.name);
-        $("#player_image").html("<img src='assets/media/" + player.icon + "'></img>");
+        $("#player_image").html("<img src='assets/media/" + character[$(this).attr("id")].icon + "'></img>");
         $("#player_health").text(player.health);
 
-// if player is selected, but not opponent, assign id to "opponent", change image to color.
-    } else if (player && !opponent && gameOn === false) {
-        if (character[$(this).attr("id")] !== player) {
-            opponent = character[$(this).attr("id")];
-            $(this).css("filter", "grayscale(0%)");
+        // change image to color and update directions
+        $(this).css("filter", "grayscale(0%)");
+        $("#directions").text("now, choose your opponent");
+
+    // if player is selected, but opponent is not, assign id to "opponent", .
+    } else if (player.name && !opponent.name) {
+
+        // if it is not the same as player:
+        if (character[$(this).attr("id")].name !== player.name) {
+
+            // populate the opponent object
+            opponent.name = character[$(this).attr("id")].name;
+            opponent.health = character[$(this).attr("id")].health;
+            opponent.attack = character[$(this).attr("id")].counter;
+
             // Insert current opponent info into div
             $("#opponent_name").text(opponent.name);
-            $("#opponent_image").html("<img src='assets/media/" + opponent.icon + "'></img>");
+            $("#opponent_image").html("<img src='assets/media/" + character[$(this).attr("id")].icon + "'></img>");
             $("#opponent_health").text(opponent.health);
+            
+            //change image to color and update directions
+            $(this).css("filter", "grayscale(0%)");
+            $("#directions").text("Click START to begin the battle");
         }
     } 
 });
 
+// when you click on START:
 $("#start").click(function() {
     if (player && opponent) {
         gameOn = true;
+        $("#directions").text("The battle has begun.  Now Attack!");
     }
-})
+});
 
+// when you click on ATTACK:
 $("#attack").click(function() {
     if (gameOn === true && opponent.health > 0 && player.health > 0) {
-        opponent.health -= player.attack;
-        $("#opponent_health").text(opponent.health);
-        player.health -= opponent.attack;
-        $("#player_health").text(player.health);
-    }
-})
+        
+        // modify player/opponent health
+        let opponentDam = calcDamage(player) * turnCount;
+        let playerDam  = calcDamage(opponent);
+        
+        opponent.health -= opponentDam;
+        player.health -= playerDam;
 
+        $("#opponent_health").text(opponent.health);
+        $("#player_health").text(player.health);
+        $("#directions").text(opponent.name + " took " + playerDam + " damage. " + player.name + " took " + opponentDam + " damage.");
+        turnCount++;
+    }
+});
+
+// when you click on RESET:
 $("#reset").click(function() {
-    $(".character_img").css("filter", "grayscale(100%)");
-    player = undefined;
-    opponent = undefined;
+
+    //
+    player = {};
+    opponent = {};
     gameOn = false;
     $(".player_card").empty();
-})
+    $(".character_img").css("filter", "grayscale(100%)");
+    $("#directions").text("Choose your character");
+});
