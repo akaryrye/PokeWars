@@ -34,17 +34,18 @@ let character = {
 let player;
 let opponent;
 let gameOn = false;
-let turnCount = 0;
+let turnCount = 1;
 
 // determines how much damage an attack yields
 function calcDamage(playerUp) {
     let accuracy = Math.floor(Math.random() * Math.floor(100));
-    //let attackPower = character.playerUp.
+    let attackPower = character[playerUp].attack * accuracy;
+    return attackPower;
 }
 
 // When you click on a character:
 $(".character_img").click(function() {
-// If player isnt selected, asign the id to "player", change image to color
+// If player isnt selected, populate "player" object, change image to color
     if (!player && gameOn === false) {
         player = character[$(this).attr("id")];
         $(this).css("filter", "grayscale(0%)");
@@ -55,13 +56,14 @@ $(".character_img").click(function() {
 
 // if player is selected, but not opponent, assign id to "opponent", change image to color.
     } else if (player && !opponent && gameOn === false) {
-        if ($(this).attr("id") !== player)
+        if (character[$(this).attr("id")] !== player) {
             opponent = character[$(this).attr("id")];
-        $(this).css("filter", "grayscale(0%)");
-        // Insert current opponent info into div
-        $("#opponent_name").text(opponent.name);
-        $("#opponent_image").html("<img src='assets/media/" + opponent.icon + "'></img>");
-        $("#opponent_health").text(opponent.health);
+            $(this).css("filter", "grayscale(0%)");
+            // Insert current opponent info into div
+            $("#opponent_name").text(opponent.name);
+            $("#opponent_image").html("<img src='assets/media/" + opponent.icon + "'></img>");
+            $("#opponent_health").text(opponent.health);
+        }
     } 
 });
 
@@ -72,17 +74,16 @@ $("#start").click(function() {
 })
 
 $("#attack").click(function() {
-    if (gameOn === true) {
-        let winner = chooseWinner();
-        if (winner == 0) {
-
-        }
+    if (gameOn === true && opponent.health > 0 && player.health > 0) {
+        opponent.health -= player.attack;
+        $("#opponent_health").text(opponent.health);
+        player.health -= opponent.attack;
+        $("#player_health").text(player.health);
     }
 })
 
 $("#reset").click(function() {
-    $("#" + player).css("filter", "grayscale(100%)");
-    $("#" + opponent).css("filter", "grayscale(100%)");
+    $(".character_img").css("filter", "grayscale(100%)");
     player = undefined;
     opponent = undefined;
     gameOn = false;
