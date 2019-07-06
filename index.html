@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>Document</title>
+
+</head>
+<body background="assets/media/poke_deathstar.jpg">
+    <div id="header">
+        <img id="header_img" src="assets/media/poke_wars.jpg">
+        <h3 id="directions"> Directions: Choose a character.</h3>
+    </div>
+    <div id="container">
+        
+        <div class="row">
+            <div class="col">
+                <img class="character_img" id="ash" src="assets\media\ash.jpeg">
+            </div>
+            <div class="col">
+                <img class="character_img" id="pikachu" src="assets\media\pikachu.jpg">
+            </div>
+            <div class="col">
+                <img class="character_img" id="charizard" src="assets\media\charizard.jpg">
+            </div>
+            <div class="col">
+                <img class="character_img" id="bulbasaur" src="assets\media\bulbasaur.jpeg">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col" id="player">
+                <div class="player_card" id="player_name"></div>
+                <div class="player_card" id="player_image"></div>
+                <div class="player_card" id="player_health"></div>
+            </div>
+
+            <div class="col" id="versus">
+                <img src="assets/media/versus.jpg"></img>
+            </div>
+
+            <div class="col" id="opponent">
+                <div class="player_card" id="opponent_name"></div>
+                <div class="player_card" id="opponent_image"></div>
+                <div class="player_card" id="opponent_health"></div>
+            </div>            
+        </div>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row" id="controls">
+            <div class="col" id="start"><h3>START</h3></div>
+            <div class="col" id="attack"><h3>ATTACK</h3></div>
+            <div class="col" id="reset"><h3>RESET</h3>></div>
+        </div>
+    </div>
+    
+</body>
+    <script src="assets/js/game.js" type="text/javascript"></script>  
+</html>
