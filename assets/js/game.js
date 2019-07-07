@@ -1,6 +1,6 @@
 
-let character = {
-    
+// object with character stats
+let character = {  
     ash: {
         name: "Ash",
         health: 150,
@@ -31,6 +31,7 @@ let character = {
     }
 };
 
+// global variables
 let player = {};
 let opponent = {};
 let gameOn = false;
@@ -62,13 +63,13 @@ $(".character_img").click(function() {
 
         // change image to color and update directions
         $(this).css("filter", "grayscale(0%)");
-        $("#directions").text("now, choose your opponent");
+        $("#message").text("now, choose your opponent");
 
     // if player is selected, but opponent is not, assign id to "opponent", .
     } else if (player.name && !opponent.name) {
 
         // if it is not the same as player:
-        if (character[$(this).attr("id")].name !== player.name) {
+        if (character[$(this).attr("id")].name !== player.name && !listOfDead.includes(character[$(this).attr("id")].name)) {
 
             // populate the opponent object
             opponent.name = character[$(this).attr("id")].name;
@@ -82,45 +83,69 @@ $(".character_img").click(function() {
             
             //change image to color and update directions
             $(this).css("filter", "grayscale(0%)");
-            $("#directions").text("Click START to begin the battle");
+            $("#message").text("Click START to begin the battle");
         }
     } 
 });
 
 // when you click on START:
 $("#start").click(function() {
-    if (player && opponent) {
+    if (player.name && opponent.name) {
         gameOn = true;
-        $("#directions").text("The battle has begun.  Now Attack!");
+        $("#message").text("The battle has begun.  Now Attack!");
     }
 });
 
 // when you click on ATTACK:
-$("#attack").click(function() {
-    if (gameOn === true && opponent.health > 0 && player.health > 0) {
-        
-        // modify player/opponent health
-        let opponentDam = calcDamage(player) * turnCount;
-        let playerDam  = calcDamage(opponent);
-        
-        opponent.health -= opponentDam;
-        player.health -= playerDam;
+$(".button").click(function() {
+    if (gameOn === true) {
 
-        $("#opponent_health").text(opponent.health);
-        $("#player_health").text(player.health);
-        $("#directions").text(opponent.name + " took " + playerDam + " damage. " + player.name + " took " + opponentDam + " damage.");
-        turnCount++;
+        if (opponent.health > 0 && player.health > 0) {
+        
+            // modify player/opponent health
+            let opponentDam = calcDamage(player) * turnCount;
+            let playerDam  = calcDamage(opponent);
+            opponent.health -= opponentDam;
+            player.health -= playerDam;
+
+            // update player cards
+            $("#opponent_health").text(opponent.health);
+            $("#player_health").text(player.health);
+            $("#message").text(opponent.name + " took " + playerDam + " damage. " + player.name + " took " + opponentDam + " damage.");
+            turnCount++;
+        }
+        
+            // if opponent damage is 0 or less
+        if (player.health > 0 && opponent.health <= 0) {
+            $("#message").text(opponent.name + " has been defeated.  Now choose your next opponent.");
+            listOfDead.push(opponent.name)
+            if (listOfDead.length === 3 ) {
+                $("#message").text("Game Over ... You have defeated all opponents!!");
+            }
+            //clear the opponent object
+            opponent = {};
+            gameOn = false;
+            turnCount = 0;
+
+        // if your health drops below 0
+        } else if (player.health <= 0 && opponent.health > 0) {
+            $("#message").text("you have been defeated");
+        }
     }
+    
 });
 
 // when you click on RESET:
 $("#reset").click(function() {
 
-    //
+    // clear variables
     player = {};
-    opponent = {};
+    opponent = {};       
     gameOn = false;
+    listOfDead = [];
+
+    // clear player card divs
     $(".player_card").empty();
     $(".character_img").css("filter", "grayscale(100%)");
-    $("#directions").text("Choose your character");
+    $("#message").text("Choose a character");
 });

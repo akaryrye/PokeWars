@@ -61,7 +61,6 @@ body {
 }
 
 #player_image, #opponent_image {
-    width: 100%;
     height: 50%;
 }
 
@@ -78,16 +77,30 @@ body {
     border: 0px solid black;
 }
 
-#controls {
-    background-color: #d8db1c;
-    color: black;
+#message {
+    height: 80%;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 30px;
+    background-color: rgba(74, 75, 66, 0.479);
+    color: #d8db1c;
     border-radius: 20px;
+    font-size: 40px;
+    text-align: center;
+    width: 50%;
 }
 
-#controls div {
-    border-radius: 20px;
-    top: 30px;
+.button {
     text-align: center;
+    padding: 10px;
+    background-color: #d8db1c;
+    color: black;
+    border-radius: 10px;
+}
+
+.button:hover {
+    background-color: #ff000085;
 }
 
 h3 {
