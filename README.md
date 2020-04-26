@@ -4,4 +4,4 @@ Built with HTML, CSS, and JQuery.  Select your player, and click start to begin.
 
 Thank you and I hope you enjoyed this app!
 
-Ryan K Alldrin
+*** Ryan K Alldrin ***
